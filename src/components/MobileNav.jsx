@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function MobileNav() {
+function MobileNav({ onJournal }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -39,6 +39,9 @@ function MobileNav() {
         </a>
         <a href="#manifesto" className="nav-link" onClick={closeMenu}>
           Manifesto
+        </a>
+        <a href="#journal" className="nav-link" onClick={(e) => { closeMenu(); onJournal(e); }}>
+          Journal
         </a>
         <a href="#footer" className="nav-link" onClick={closeMenu}>
           Contact

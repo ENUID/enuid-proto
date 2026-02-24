@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-function Sidebar({ onToggle }) {
+function Sidebar({ onToggle, onJournal }) {
   const [activeSection, setActiveSection] = useState('');
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -34,8 +34,8 @@ function Sidebar({ onToggle }) {
   return (
     <>
       {isCollapsed && (
-        <button 
-          className="sidebar-expand-btn" 
+        <button
+          className="sidebar-expand-btn"
           onClick={toggleSidebar}
           aria-label="Expand sidebar"
         >
@@ -44,51 +44,54 @@ function Sidebar({ onToggle }) {
         </button>
       )}
       <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''}`} aria-label="Desktop navigation">
-      <button 
-        className="sidebar-toggle" 
-        onClick={toggleSidebar}
-        aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-      >
-        <span></span>
-        <span></span>
-      </button>
-      <div>
-        <div className="logo-mark">ENUID</div>
-        <div className="logo-sub">
-        </div>
-      </div>
-      <nav>
-        <div className="nav-section">
-          <div className="nav-label">Navigate</div>
-          <a href="#research" className={`nav-link ${activeSection === 'research' ? 'active' : ''}`}>
-            Research Log
-          </a>
-          <a href="#about" className={`nav-link ${activeSection === 'about' ? 'active' : ''}`}>
-            About
-          </a>
-          <a href="#fluid-orbit" className={`nav-link ${activeSection === 'fluid-orbit' ? 'active' : ''}`}>
-            Fluid Orbit
-          </a>
-          <a href="#manifesto" className={`nav-link ${activeSection === 'manifesto' ? 'active' : ''}`}>
-            Manifesto
-          </a>
-        </div>
-        <div className="nav-section">
-          <div className="nav-label">Connect</div>
-          <a href="#footer" className={`nav-link ${activeSection === 'footer' ? 'active' : ''}`}>
-            Contact
-          </a>
-          <a href="#" className="nav-link">
-            Careers
-          </a>
-        </div>
-      </nav>
-      <div className="sidebar-footer">
+        <button
+          className="sidebar-toggle"
+          onClick={toggleSidebar}
+          aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        >
+          <span></span>
+          <span></span>
+        </button>
         <div>
-          <span className="status-dot"></span>Lab is active
+          <div className="logo-mark">ENUID</div>
+          <div className="logo-sub">
+          </div>
         </div>
-      </div>
-    </aside>
+        <nav>
+          <div className="nav-section">
+            <div className="nav-label">Navigate</div>
+            <a href="#research" className={`nav-link ${activeSection === 'research' ? 'active' : ''}`}>
+              Research Log
+            </a>
+            <a href="#about" className={`nav-link ${activeSection === 'about' ? 'active' : ''}`}>
+              About
+            </a>
+            <a href="#fluid-orbit" className={`nav-link ${activeSection === 'fluid-orbit' ? 'active' : ''}`}>
+              Fluid Orbit
+            </a>
+            <a href="#manifesto" className={`nav-link ${activeSection === 'manifesto' ? 'active' : ''}`}>
+              Manifesto
+            </a>
+            <a href="#journal" className={`nav-link ${activeSection === 'journal' ? 'active' : ''}`} onClick={onJournal}>
+              Journal
+            </a>
+          </div>
+          <div className="nav-section">
+            <div className="nav-label">Connect</div>
+            <a href="#footer" className={`nav-link ${activeSection === 'footer' ? 'active' : ''}`}>
+              Contact
+            </a>
+            <a href="#" className="nav-link">
+              Careers
+            </a>
+          </div>
+        </nav>
+        <div className="sidebar-footer">
+          <div>
+            <span className="status-dot"></span>Lab is active
+          </div>
+        </div>
+      </aside>
     </>
   );
 }

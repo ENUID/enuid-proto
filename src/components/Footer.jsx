@@ -118,7 +118,7 @@ function Footer() {
               no-reply@enuid.com
             </a>
             <p className="privacy-brand-line">
-              <strong>ENUID</strong> (Evolving Neural Understanding Intelligence Development)
+              <strong>ENUID</strong>
             </p>
           </div>
         </div>

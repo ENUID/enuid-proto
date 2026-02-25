@@ -3,6 +3,8 @@ import {
     addJournalEntry,
     updateJournalEntry,
     deleteJournalEntry,
+    auth,
+    signInWithEmailAndPassword,
 } from '../firebase';
 
 function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
@@ -10,6 +12,7 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loginError, setLoginError] = useState('');
+    const [loggingIn, setLoggingIn] = useState(false);
     const [editing, setEditing] = useState(null);
     const [saving, setSaving] = useState(false);
 
@@ -25,15 +28,17 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
         order: 1,
     });
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        const adminEmail = import.meta.env.VITE_ADMIN_EMAIL;
-        const adminPw = import.meta.env.VITE_ADMIN_PASSWORD;
-        if (email === adminEmail && password === adminPw) {
+        setLoggingIn(true);
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
             setIsAuthed(true);
             setLoginError('');
-        } else {
+        } catch (err) {
             setLoginError('Invalid email or password');
+        } finally {
+            setLoggingIn(false);
         }
     };
 
@@ -207,8 +212,8 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
                             className="admin-input"
                         />
                         {loginError && <div className="admin-error">{loginError}</div>}
-                        <button type="submit" className="admin-btn admin-btn-primary">
-                            Log In
+                        <button type="submit" className="admin-btn admin-btn-primary" disabled={loggingIn}>
+                            {loggingIn ? 'Logging in…' : 'Log In'}
                         </button>
                     </form>
                 </div>

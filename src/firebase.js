@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import {
     getFirestore,
     collection,
@@ -22,6 +23,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
 const COLLECTION = 'journal_entries';
@@ -55,4 +57,4 @@ export async function deleteJournalEntry(id) {
     await deleteDoc(ref);
 }
 
-export { db };
+export { db, auth, signInWithEmailAndPassword };

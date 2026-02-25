@@ -209,7 +209,7 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
                         {editing === 'new'
                             ? 'New Journal Entry'
                             : isDefaultEntry(editing)
-                                ? 'Edit Default Entry (will save to database)'
+                                ? 'Edit Default Entry'
                                 : 'Edit Entry'}
                     </h2>
 

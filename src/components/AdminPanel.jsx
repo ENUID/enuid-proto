@@ -241,17 +241,6 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
                         </label>
 
                         <label className="admin-label">
-                            Highlight Quote (optional)
-                            <input
-                                type="text"
-                                className="admin-input"
-                                value={form.highlight}
-                                onChange={(e) => setForm({ ...form, highlight: e.target.value })}
-                                placeholder="An italic highlighted statement"
-                            />
-                        </label>
-
-                        <label className="admin-label">
                             Subsection Title (optional)
                             <input
                                 type="text"
@@ -275,6 +264,17 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
                                     setForm({ ...form, subsectionItems: e.target.value })
                                 }
                                 placeholder={"First bullet point\nSecond bullet point"}
+                            />
+                        </label>
+
+                        <label className="admin-label">
+                            Highlight Quote (optional)
+                            <input
+                                type="text"
+                                className="admin-input"
+                                value={form.highlight}
+                                onChange={(e) => setForm({ ...form, highlight: e.target.value })}
+                                placeholder="An italic highlighted statement"
                             />
                         </label>
 

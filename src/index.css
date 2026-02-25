@@ -1396,6 +1396,16 @@ FOOTER
     line-height: 1.75;
     margin-bottom: 8px;
     font-weight: 300;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: default;
+    transition: background 0.2s, color 0.2s, transform 0.2s, padding-left 0.2s;
+}
+
+.journal-list li:hover {
+    background: rgba(0, 0, 0, 0.03);
+    color: var(--ink);
+    padding-left: 18px;
 }
 
 .journal-footer-meta {

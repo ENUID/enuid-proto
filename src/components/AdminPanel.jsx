@@ -225,16 +225,7 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
                             />
                         </label>
 
-                        <label className="admin-label">
-                            Order (number)
-                            <input
-                                type="number"
-                                className="admin-input"
-                                value={form.order}
-                                onChange={(e) => setForm({ ...form, order: e.target.value })}
-                                min="1"
-                            />
-                        </label>
+
 
                         {/* ── Single paragraph content ── */}
                         <label className="admin-label">

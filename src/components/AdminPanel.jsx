@@ -19,7 +19,7 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
     // Form state
     const [form, setForm] = useState({
         title: '',
-        paragraphs: [''],
+        paragraph: '',
         highlight: '',
         meta: '',
         subsectionTitle: '',
@@ -45,7 +45,7 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
     const resetForm = () => {
         setForm({
             title: '',
-            paragraphs: [''],
+            paragraph: '',
             highlight: '',
             meta: '',
             subsectionTitle: '',
@@ -62,12 +62,12 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
     };
 
     const startEdit = (entry) => {
-        const paras = entry.paragraphs && entry.paragraphs.length > 0
-            ? [...entry.paragraphs]
-            : [''];
+        const para = entry.paragraphs && entry.paragraphs.length > 0
+            ? entry.paragraphs.join('\n\n')
+            : '';
         setForm({
             title: entry.title || '',
-            paragraphs: paras,
+            paragraph: para,
             highlight: entry.highlight || '',
             meta: (entry.meta || []).join('\n'),
             subsectionTitle:
@@ -84,30 +84,7 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
         setEditing(entry.id);
     };
 
-    // ── Paragraph management ──
-    const updateParagraph = (index, value) => {
-        const updated = [...form.paragraphs];
-        updated[index] = value;
-        setForm({ ...form, paragraphs: updated });
-    };
 
-    const addParagraph = () => {
-        setForm({ ...form, paragraphs: [...form.paragraphs, ''] });
-    };
-
-    const removeParagraph = (index) => {
-        if (form.paragraphs.length <= 1) return;
-        const updated = form.paragraphs.filter((_, i) => i !== index);
-        setForm({ ...form, paragraphs: updated });
-    };
-
-    const moveParagraph = (index, direction) => {
-        const newIndex = index + direction;
-        if (newIndex < 0 || newIndex >= form.paragraphs.length) return;
-        const updated = [...form.paragraphs];
-        [updated[index], updated[newIndex]] = [updated[newIndex], updated[index]];
-        setForm({ ...form, paragraphs: updated });
-    };
 
     const isDefaultEntry = (id) => typeof id === 'string' && id.startsWith('default-');
 
@@ -116,7 +93,8 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
 
         const data = {
             title: form.title.trim(),
-            paragraphs: form.paragraphs
+            paragraphs: form.paragraph
+                .split('\n\n')
                 .map((p) => p.trim())
                 .filter(Boolean),
             highlight: form.highlight.trim(),
@@ -125,7 +103,7 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
                 .map((m) => m.trim())
                 .filter(Boolean),
             subsections:
-                form.subsectionTitle.trim()
+                form.subsectionItems.trim()
                     ? [
                         {
                             title: form.subsectionTitle.trim(),
@@ -258,57 +236,18 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
                             />
                         </label>
 
-                        {/* ── Individual paragraphs ── */}
-                        <div className="admin-label">
-                            Paragraphs
-                            <span className="admin-hint">Each paragraph is a separate block. Reorder with ▲ ▼ arrows.</span>
-                        </div>
-
-                        {form.paragraphs.map((para, i) => (
-                            <div key={i} className="admin-para-row">
-                                <div className="admin-para-header">
-                                    <span className="admin-para-num">¶{i + 1}</span>
-                                    <div className="admin-para-controls">
-                                        <button
-                                            type="button"
-                                            className="admin-btn admin-btn-icon"
-                                            onClick={() => moveParagraph(i, -1)}
-                                            disabled={i === 0}
-                                            title="Move up"
-                                        >▲</button>
-                                        <button
-                                            type="button"
-                                            className="admin-btn admin-btn-icon"
-                                            onClick={() => moveParagraph(i, 1)}
-                                            disabled={i === form.paragraphs.length - 1}
-                                            title="Move down"
-                                        >▼</button>
-                                        <button
-                                            type="button"
-                                            className="admin-btn admin-btn-icon admin-btn-danger"
-                                            onClick={() => removeParagraph(i)}
-                                            disabled={form.paragraphs.length <= 1}
-                                            title="Remove paragraph"
-                                        >✕</button>
-                                    </div>
-                                </div>
-                                <textarea
-                                    className="admin-textarea"
-                                    rows={4}
-                                    value={para}
-                                    onChange={(e) => updateParagraph(i, e.target.value)}
-                                    placeholder={`Paragraph ${i + 1}...`}
-                                />
-                            </div>
-                        ))}
-
-                        <button
-                            type="button"
-                            className="admin-btn admin-btn-secondary admin-add-para-btn"
-                            onClick={addParagraph}
-                        >
-                            + Add Paragraph
-                        </button>
+                        {/* ── Single paragraph content ── */}
+                        <label className="admin-label">
+                            Content
+                            <span className="admin-hint">Write all content here. Use a blank line (double Enter) to separate paragraphs.</span>
+                            <textarea
+                                className="admin-textarea"
+                                rows={10}
+                                value={form.paragraph}
+                                onChange={(e) => setForm({ ...form, paragraph: e.target.value })}
+                                placeholder="Write your journal entry content here..."
+                            />
+                        </label>
 
                         <label className="admin-label">
                             Highlight Quote (optional)
@@ -334,21 +273,19 @@ function AdminPanel({ entries, onClose, onRefresh, onUpdateLocal }) {
                             />
                         </label>
 
-                        {form.subsectionTitle && (
-                            <label className="admin-label">
-                                Subsection Bullet Items
-                                <span className="admin-hint">One item per line</span>
-                                <textarea
-                                    className="admin-textarea"
-                                    rows={5}
-                                    value={form.subsectionItems}
-                                    onChange={(e) =>
-                                        setForm({ ...form, subsectionItems: e.target.value })
-                                    }
-                                    placeholder={"First bullet point\nSecond bullet point"}
-                                />
-                            </label>
-                        )}
+                        <label className="admin-label">
+                            Subsection Bullet Items (optional)
+                            <span className="admin-hint">One item per line — these will appear as bullet points</span>
+                            <textarea
+                                className="admin-textarea"
+                                rows={5}
+                                value={form.subsectionItems}
+                                onChange={(e) =>
+                                    setForm({ ...form, subsectionItems: e.target.value })
+                                }
+                                placeholder={"First bullet point\nSecond bullet point"}
+                            />
+                        </label>
 
                         <label className="admin-label">
                             Metadata Lines (optional)

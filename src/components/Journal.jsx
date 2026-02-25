@@ -107,7 +107,7 @@ function Journal({ onBack }) {
                         {entry.subsections &&
                             entry.subsections.map((sub, si) => (
                                 <div key={si} className="journal-subsection">
-                                    <h3 className="journal-subsection-title">{sub.title}</h3>
+                                    {sub.title && <h3 className="journal-subsection-title">{sub.title}</h3>}
                                     <ul className="journal-list">
                                         {sub.items.map((item, ii) => (
                                             <li key={ii}>{item}</li>

@@ -47,7 +47,7 @@ const DEFAULT_ENTRIES = [
                 ],
             },
         ],
-        footerMeta: [],
+        footerMeta: ['By team ENUID', 'Posted on 22 February 2026'],
     },
 ];
 
